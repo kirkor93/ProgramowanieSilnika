@@ -87,6 +87,8 @@ void CameraClass::Render()
 
 	// Finally create the view matrix from the three updated vectors.
 	D3DXMatrixLookAtLH(&m_viewMatrix, &position, &lookAt, &up);
+
+	return;
 }
 
 void CameraClass::GetViewMatrix(D3DXMATRIX& viewMatrix)
