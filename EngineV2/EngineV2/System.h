@@ -43,6 +43,7 @@ private:
 	Graphics* m_Graphics;
 };
 
+
 /////////////////////////
 // FUNCTION PROTOTYPES //
 /////////////////////////

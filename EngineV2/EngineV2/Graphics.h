@@ -1,14 +1,15 @@
 #pragma once
 
-//////////////
-// INCLUDES //
-//////////////
-#include <windows.h>
+#include <vector>
 
-/////////////////
-// MY INCLUDES //
-/////////////////
-#include "D3DClass.h"
+//////////////
+// MY CLASS INCLUDES //
+//////////////
+#include "d3dclass.h"
+#include "Camera.h"
+#include "GameObject.h"
+#include "TextureShaderClass.h"
+
 
 /////////////
 // GLOBALS //
@@ -29,9 +30,15 @@ public:
 	void Shutdown();
 	bool Frame();
 
+	void SendTranslate(float, float);
+
 private:
 	bool Render();
 
-	D3DClass *m_D3D;
+private:
+	D3DClass* m_D3D;
+	Camera* m_Camera;
+	GameObject* mainGameObject;
+	std::vector<GameObject*> gameObjects;
+	TextureShaderClass* m_TextureShader;
 };
-
