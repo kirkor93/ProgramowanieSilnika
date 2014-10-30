@@ -36,6 +36,7 @@ private:
 	bool Render();
 
 private:
+	int frameCounter;
 	D3DClass* m_D3D;
 	Camera* m_Camera;
 	GameObject* mainGameObject;

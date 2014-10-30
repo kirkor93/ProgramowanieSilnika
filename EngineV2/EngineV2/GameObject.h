@@ -18,6 +18,10 @@ public:
 	bool Initialize(ID3D11Device*, int, int);
 	void Shutdown();
 	bool Render(ID3D11DeviceContext*);
+
+	bool LoadTexture(ID3D11Device* device, WCHAR* filename);
+	void SetNextAnimationFrame();
+
 	int GetIndexCount();
 	ID3D11ShaderResourceView* GetTexture();
 

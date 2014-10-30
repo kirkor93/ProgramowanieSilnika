@@ -4,7 +4,6 @@ Sprite2D::Sprite2D()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
-	m_Texture = 0;
 }
 
 
@@ -18,7 +17,7 @@ Sprite2D::~Sprite2D()
 }
 
 
-bool Sprite2D::Initialize(ID3D11Device* device, int screenWidth, int screenHeight, WCHAR* textureFilename, int bitmapWidth, int bitmapHeight)
+bool Sprite2D::Initialize(ID3D11Device* device, int screenWidth, int screenHeight, WCHAR* firstTextureFrameName, int bitmapWidth, int bitmapHeight)
 {
 	bool result;
 
@@ -41,14 +40,10 @@ bool Sprite2D::Initialize(ID3D11Device* device, int screenWidth, int screenHeigh
 		return false;
 	}
 
-	// Load the texture for this model.
-	result = LoadTexture(device, textureFilename);
-	if (!result)
-	{
-		return false;
-	}
+	animationFramesCount = 0;
+	currentAnimationFrame = 0;
 
-	return true;
+	result = LoadTexture(device, firstTextureFrameName);
 }
 
 void Sprite2D::Shutdown()
@@ -87,7 +82,7 @@ int Sprite2D::GetIndexCount()
 
 ID3D11ShaderResourceView* Sprite2D::GetTexture()
 {
-	return m_Texture->GetTexture();
+	return m_Texture[currentAnimationFrame]->GetTexture();
 }
 
 bool Sprite2D::InitializeBuffers(ID3D11Device* device)
@@ -302,20 +297,23 @@ void Sprite2D::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	return;
 }
 
+void Sprite2D::SetNextAnimationFrame()
+{
+	currentAnimationFrame++;
+	currentAnimationFrame %= animationFramesCount;
+}
+
 bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
 {
 	bool result;
 
 
 	// Create the texture object.
-	m_Texture = new Texture;
-	if (!m_Texture)
-	{
-		return false;
-	}
+	m_Texture.push_back(new Texture);
+	animationFramesCount++;
 
 	// Initialize the texture object.
-	result = m_Texture->Initialize(device, filename);
+	result = m_Texture[animationFramesCount - 1]->Initialize(device, filename);
 	if (!result)
 	{
 		return false;
@@ -327,11 +325,15 @@ bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
 void Sprite2D::ReleaseTexture()
 {
 	// Release the texture object.
-	if (m_Texture)
+	if (!m_Texture.empty())
 	{
-		m_Texture->Shutdown();
-		delete m_Texture;
-		m_Texture = 0;
+		for (int i = 0; i < animationFramesCount; i += 1)
+		{
+			m_Texture[i]->Shutdown();
+			delete m_Texture[i];
+			m_Texture[i] = 0;
+		}
+		
 	}
 
 	return;

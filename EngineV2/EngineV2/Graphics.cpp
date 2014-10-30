@@ -7,6 +7,7 @@ Graphics::Graphics()
 	m_Camera = 0;
 	mainGameObject = 0;
 	m_TextureShader = 0;
+	frameCounter = 0;
 }
 
 
@@ -49,8 +50,9 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 
-	// Create the game object.
-	mainGameObject = new GameObject(L"./texture.dds", 64, 64, 320, 240);
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Create the MAIN game object.
+	mainGameObject = new GameObject(L"./Textures/Main_champ_1.dds", 128, 128, 320, 240);
 	if (!mainGameObject)
 	{
 		return false;
@@ -64,20 +66,36 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	//// Create the game object.
-	//gameObjects.push_back(new GameObject(L"../Engine2D/texture.dds", 64, 64, 100, 100));
-	//if (gameObjects.size() <= 0)
-	//{
-	//	return false;
-	//}
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_3.dds");
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_4.dds");
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_5.dds");
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_6.dds");
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_7.dds");
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_8.dds");
 
-	//// Initialize the model object.
-	//result = gameObjects[0]->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight);
-	//if (!result)
-	//{
-	//	MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
-	//	return false;
-	//}
+	//mainGameObject->SetNextAnimationFrame();
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+
+	// Create other game objects.
+	gameObjects.push_back(new GameObject(L"./Textures/Level_template.dds", 2048, 2048, 0, 0));
+	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100));
+
+
+
+	// Initialize other game objects.
+
+	for (int i = 0; i < gameObjects.size(); i += 1)
+	{
+		result = gameObjects[i]->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight);
+		if (!result)
+		{
+			MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+			return false;
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	// Create the texture shader object.
 	m_TextureShader = new TextureShaderClass;
@@ -117,14 +135,14 @@ void Graphics::Shutdown()
 		mainGameObject = 0;
 	}
 
-	//if (gameObjects.size()>0)
-	//{
-	//	for (int i = 0; i < gameObjects.size(); i += 1)
-	//	{
-	//		gameObjects[i]->Shutdown();
-	//	}
-	//	gameObjects.clear();
-	//}
+	if (gameObjects.size()>0)
+	{
+		for (int i = 0; i < gameObjects.size(); i += 1)
+		{
+			gameObjects[i]->Shutdown();
+		}
+		gameObjects.clear();
+	}
 
 	// Release the camera object.
 	if (m_Camera)
@@ -133,7 +151,7 @@ void Graphics::Shutdown()
 		m_Camera = 0;
 	}
 
-	//Release the KRAKEN (never get bored) and the D3D object
+	//Release the D3D object
 	if (m_D3D)
 	{
 		m_D3D->Shutdown();
@@ -148,7 +166,9 @@ void Graphics::Shutdown()
 bool Graphics::Frame()
 {
 	bool result;
+	frameCounter++;
 
+	
 
 	// Render the graphics scene.
 	result = Render();
@@ -181,28 +201,30 @@ bool Graphics::Render()
 	// Turn off the Z buffer to begin all 2D rendering.
 	m_D3D->TurnZBufferOff();
 
+
+	if (gameObjects.size()>0)
+	{
+		for (int i = 0; i < gameObjects.size(); i += 1)
+		{
+			result = gameObjects[i]->Render(m_D3D->GetDeviceContext());
+			if (!result)
+			{
+				return false;
+			}
+			result = m_TextureShader->Render(m_D3D->GetDeviceContext(), gameObjects[i]->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, gameObjects[i]->GetTexture());
+			if (!result)
+			{
+				return false;
+			}
+		}
+	}
+
 	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = mainGameObject->Render(m_D3D->GetDeviceContext());
 	if (!result)
 	{
 		return false;
 	}
-
-
-	//GameObject* tmp;
-	//if (gameObjects.size()>0)
-	//{
-	//	for (int i = 0; i < gameObjects.size(); i += 1)
-	//	{
-	//		tmp = gameObjects[i];
-	//		result = tmp->Render(m_D3D->GetDeviceContext());
-	//		if (!result)
-	//		{
-	//			return false;
-	//		}
-	//		delete tmp;
-	//	}
-	//}
 
 	// Render the bitmap with the texture shader.
 	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), mainGameObject->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, mainGameObject->GetTexture());
@@ -223,4 +245,5 @@ bool Graphics::Render()
 void Graphics::SendTranslate(float positionX, float positionY)
 {
 	this->mainGameObject->Translate(positionX, positionY);
+	this->m_Camera->Translate(positionX, -positionY, 0.0f);
 }

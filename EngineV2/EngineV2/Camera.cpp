@@ -40,6 +40,13 @@ void Camera::SetRotation(float x, float y, float z)
 	return;
 }
 
+void Camera::Translate(float x, float y, float z)
+{
+	this->m_positionX += x;
+	this->m_positionY += y;
+	this->m_positionZ += z;
+}
+
 D3DXVECTOR3 Camera::GetPosition()
 {
 	return D3DXVECTOR3(m_positionX, m_positionY, m_positionZ);

@@ -26,6 +26,11 @@ bool GameObject::Render(ID3D11DeviceContext* deviceContext)
 	return m_Sprite2D->Render(deviceContext, this->Position.x, this->Position.y);
 }
 
+bool GameObject::LoadTexture(ID3D11Device* device, WCHAR* filename)
+{
+	return this->m_Sprite2D->LoadTexture(device, filename);
+}
+
 int GameObject::GetIndexCount()
 {
 	return m_Sprite2D->GetIndexCount();
@@ -33,6 +38,11 @@ int GameObject::GetIndexCount()
 ID3D11ShaderResourceView* GameObject::GetTexture()
 {
 	return m_Sprite2D->GetTexture();
+}
+
+void GameObject::SetNextAnimationFrame()
+{
+	m_Sprite2D->SetNextAnimationFrame();
 }
 
 void GameObject::SetModelPosition()

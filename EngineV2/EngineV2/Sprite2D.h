@@ -5,12 +5,15 @@
 //////////////
 #include <d3d11.h>
 #include <d3dx10math.h>
+#include <vector>
 
 
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
 #include "Texture.h"
+
+using namespace std;
 
 class Sprite2D
 {
@@ -37,13 +40,16 @@ public:
 	void SetScale(D3DXVECTOR2);
 	void SetRotation(D3DXVECTOR2);
 
+	void SetNextAnimationFrame();
+	bool LoadTexture(ID3D11Device*, WCHAR*);
+
 private:
 	bool InitializeBuffers(ID3D11Device*);
 	void ShutdownBuffers();
 	bool UpdateBuffers(ID3D11DeviceContext*, float, float);
 	void RenderBuffers(ID3D11DeviceContext*);
 
-	bool LoadTexture(ID3D11Device*, WCHAR*);
+	
 	void ReleaseTexture();
 
 private:
@@ -53,8 +59,8 @@ private:
 	D3DXVECTOR2 Scale;
 
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
-	int m_vertexCount, m_indexCount;
-	Texture* m_Texture;
+	int m_vertexCount, m_indexCount, currentAnimationFrame, animationFramesCount;
+	vector<Texture*> m_Texture;
 
 	int m_screenWidth, m_screenHeight;
 	int m_bitmapWidth, m_bitmapHeight;

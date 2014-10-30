@@ -5,7 +5,7 @@ Input::Input()
 {
 	m_directInput = 0;
 	m_keyboard = 0;
-	this->step = 1.0f;
+	this->step = 3.0f;
 }
 
 
