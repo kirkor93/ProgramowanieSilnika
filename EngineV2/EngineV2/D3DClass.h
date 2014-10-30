@@ -57,5 +57,8 @@ private:
 	D3DXMATRIX m_worldMatrix;
 	D3DXMATRIX m_orthoMatrix;
 
+	ID3D11BlendState* d3dBlendState;
+	D3D11_BLEND_DESC omDesc;
+
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
 };
