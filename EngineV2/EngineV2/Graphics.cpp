@@ -7,7 +7,7 @@ Graphics::Graphics()
 	m_Camera = 0;
 	mainGameObject = 0;
 	m_TextureShader = 0;
-	frameCounter = 0;
+	keyPressedFrameCounter = 0;
 }
 
 
@@ -66,14 +66,13 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
+	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_2.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_3.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_4.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_5.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_6.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_7.dds");
 	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_8.dds");
-
-	//mainGameObject->SetNextAnimationFrame();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -166,9 +165,6 @@ void Graphics::Shutdown()
 bool Graphics::Frame()
 {
 	bool result;
-	frameCounter++;
-
-	
 
 	// Render the graphics scene.
 	result = Render();
@@ -246,4 +242,16 @@ void Graphics::SendTranslate(float positionX, float positionY)
 {
 	this->mainGameObject->Translate(positionX, positionY);
 	this->m_Camera->Translate(positionX, -positionY, 0.0f);
+}
+
+void Graphics::AddFrameCounter()
+{
+	keyPressedFrameCounter += 1;
+	keyPressedFrameCounter %= 1000;
+
+	if (keyPressedFrameCounter % 10 == 0)
+	{
+		mainGameObject->SetNextAnimationFrame();
+		keyPressedFrameCounter++;
+	}
 }

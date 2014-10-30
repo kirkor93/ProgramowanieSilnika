@@ -31,12 +31,13 @@ public:
 	bool Frame();
 
 	void SendTranslate(float, float);
+	void AddFrameCounter();
 
 private:
 	bool Render();
 
 private:
-	int frameCounter;
+	int keyPressedFrameCounter;
 	D3DClass* m_D3D;
 	Camera* m_Camera;
 	GameObject* mainGameObject;

@@ -4,6 +4,7 @@ System::System()
 {
 	m_Input = 0;
 	m_Graphics = 0;
+	keyPressedFrameCounter = 0;
 }
 
 
@@ -142,6 +143,8 @@ bool System::Frame()
 		return false;
 	}
 	m_Graphics->SendTranslate(m_Input->GetPosX(), m_Input->GetPosY());
+	if (m_Input->IsKeyPressed())
+		m_Graphics->AddFrameCounter();
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->Frame();
 	if (!result)

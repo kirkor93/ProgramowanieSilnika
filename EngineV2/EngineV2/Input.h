@@ -37,9 +37,10 @@ public:
 
 	float GetPosX();
 	float GetPosY();
+	bool IsKeyPressed();
 
 private:
-
+	bool keyPressed;
 	float positionX, positionY;
 	bool ReadKeyboard();
 	void ProcessInput();

@@ -35,6 +35,7 @@ private:
 	void ShutdownWindows();
 
 private:
+	int keyPressedFrameCounter;
 	LPCWSTR m_applicationName;
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;

@@ -6,6 +6,7 @@ Input::Input()
 	m_directInput = 0;
 	m_keyboard = 0;
 	this->step = 3.0f;
+	this->keyPressed = false;
 }
 
 
@@ -141,21 +142,26 @@ void Input::ProcessInput()
 {
 	positionX = 0.0f;
 	positionY = 0.0f;
+	keyPressed = false;
 	if (m_keyboardState[DIK_UP] & 0x80)
 	{
 		positionY = -1.0f * step;
+		keyPressed = true;
 	}
 	if (m_keyboardState[DIK_DOWN] & 0x80)
 	{
 		positionY = 1.0f * step;
+		keyPressed = true;
 	}
 	if (m_keyboardState[DIK_LEFT] & 0x80)
 	{
 		positionX = -1.0f * step;
+		keyPressed = true;
 	}
 	if (m_keyboardState[DIK_RIGHT] & 0x80)
 	{
 		positionX = 1.0f * step;
+		keyPressed = true;
 	}
 	return;
 }
@@ -201,4 +207,9 @@ float Input::GetPosX()
 float Input::GetPosY()
 {
 	return this->positionY;
+}
+
+bool Input::IsKeyPressed()
+{
+	return this->keyPressed;
 }
