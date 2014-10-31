@@ -169,6 +169,8 @@ void Graphics::Shutdown()
 		m_D3D = 0;
 	}
 
+	TexturesManager::Shutdown();
+
 	return;
 }
 

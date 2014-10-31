@@ -83,6 +83,7 @@ void System::Shutdown()
 	// Shutdown the window.
 	ShutdownWindows();
 
+
 	return;
 }
 

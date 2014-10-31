@@ -306,18 +306,16 @@ bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
 {
 	bool result;
 
-
+	Texture *tmp = new Texture;
 	// Create the texture object.
-	m_Texture.push_back(new Texture);
-	animationFramesCount++;
-
-	// Initialize the texture object.
-	result = m_Texture[animationFramesCount - 1]->Initialize(device, filename);
+	result = TexturesManager::GetTexture(device, filename, *tmp);
+	m_Texture.push_back(tmp);
+	
 	if (!result)
 	{
 		return false;
 	}
-
+	animationFramesCount++;
 	return true;
 }
 

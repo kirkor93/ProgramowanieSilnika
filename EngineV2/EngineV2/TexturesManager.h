@@ -1,6 +1,8 @@
 #pragma once
 
 #include <map>
+#include <string>
+#include <sstream>
 
 #include "Texture.h"
 
@@ -9,13 +11,9 @@ using namespace std;
 class TexturesManager
 {
 public:
-	TexturesManager();
-	~TexturesManager();
-
-	bool GetTexture(ID3D11Device* device, WCHAR* filename, Texture *texture);
-	void Shutdown();
+	static bool GetTexture(ID3D11Device* device, WCHAR* filename, Texture &texture);
+	static void Shutdown();
 
 private:
-	map<WCHAR*, Texture*> textures;
+	static map<WCHAR*, Texture*> textures;
 };
-

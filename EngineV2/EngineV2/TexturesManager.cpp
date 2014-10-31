@@ -1,24 +1,18 @@
 #include "TexturesManager.h"
 
+map<WCHAR*, Texture*> TexturesManager::textures;
 
-TexturesManager::TexturesManager()
+bool TexturesManager::GetTexture(ID3D11Device* device, WCHAR* filename, Texture &texture)
 {
-}
-
-
-TexturesManager::~TexturesManager()
-{
-}
-
-bool TexturesManager::GetTexture(ID3D11Device* device, WCHAR* filename, Texture *texture)
-{
-	int size = textures.size();
-	texture = textures[filename];
-	if (size < textures.size())
+	///////Exceptions version
+	try
 	{
-		texture = new Texture;
-		texture->Initialize(device, filename);
-		return true;
+		texture = *(textures.at(filename));
+	}
+	catch (std::out_of_range)
+	{
+		textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
+		return texture.Initialize(device, filename);
 	}
 
 	return true;
@@ -28,7 +22,6 @@ void TexturesManager::Shutdown()
 {
 	for (map<WCHAR*, Texture*>::iterator it = textures.begin(); it != textures.end(); it++)
 	{
-		delete it->first;
 		it->second->Shutdown();
 	}
 }

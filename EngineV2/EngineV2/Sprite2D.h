@@ -11,7 +11,7 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
-#include "Texture.h"
+#include "TexturesManager.h"
 
 using namespace std;
 
