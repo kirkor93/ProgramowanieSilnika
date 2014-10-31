@@ -1,11 +1,12 @@
-#include <iostream>
-
-#include "rapidxml.hpp"
-
-using namespace std;
+#include "XMLParser.h"
 
 int main()
 {
-	cout << "Hello world";
+	XMLParser myParser;
+	myParser.Initialize("./Level.xml");
+	myParser.BuildLevel();
+
+	int a;
+	cin >> a;
 	return 0;
 }

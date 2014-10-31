@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "TextureShaderClass.h"
 #include "TexturesManager.h"
+#include "LevelBuilder.h"
 
 
 /////////////

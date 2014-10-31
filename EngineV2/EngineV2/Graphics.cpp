@@ -78,10 +78,16 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create other game objects.
-	BuildLevel();
+	LevelBuilder builder;
+	result = builder.Initialize("./Level.xml");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the LevelBuilder.", L"Error", MB_OK);
+		return false;
+	}
 	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100));
 
-
+	builder.BuildLevel(this->levelObjects);
 
 	// Initialize other game objects.
 
@@ -152,6 +158,15 @@ void Graphics::Shutdown()
 			gameObjects[i]->Shutdown();
 		}
 		gameObjects.clear();
+	}
+
+	if (levelObjects.size()>0)
+	{
+		for (int i = 0; i < levelObjects.size(); i += 1)
+		{
+			levelObjects[i]->Shutdown();
+		}
+		levelObjects.clear();
 	}
 
 	// Release the camera object.
@@ -282,30 +297,5 @@ void Graphics::AddFrameCounter()
 	{
 		mainGameObject->SetNextAnimationFrame();
 		keyPressedFrameCounter++;
-	}
-}
-
-void Graphics::BuildLevel()
-{
-	for (int i = -1024; i < 1024; i += 128)
-	{
-		for (int j = -1024; j < 1024; j += 128)
-		{
-			int random = rand() % 3;
-			switch (random)
-			{
-			case 0:
-				levelObjects.push_back(new GameObject(L"./Textures/Water.dds", 128, 128, i, j));
-				break;
-			case 1:
-				levelObjects.push_back(new GameObject(L"./Textures/Grass.dds", 128, 128, i, j));
-				break;
-			case 2:
-				levelObjects.push_back(new GameObject(L"./Textures/Wall.dds", 128, 128, i, j));
-				break;
-			default:
-				break;
-			}
-		}
 	}
 }
