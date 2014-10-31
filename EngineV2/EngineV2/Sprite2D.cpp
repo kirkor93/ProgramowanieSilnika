@@ -48,8 +48,7 @@ bool Sprite2D::Initialize(ID3D11Device* device, int screenWidth, int screenHeigh
 
 void Sprite2D::Shutdown()
 {
-	// Release the model texture.
-	ReleaseTexture();
+
 
 	// Shutdown the vertex and index buffers.
 	ShutdownBuffers();
@@ -320,23 +319,6 @@ bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
 	}
 
 	return true;
-}
-
-void Sprite2D::ReleaseTexture()
-{
-	// Release the texture object.
-	if (!m_Texture.empty())
-	{
-		for (int i = 0; i < animationFramesCount; i += 1)
-		{
-			m_Texture[i]->Shutdown();
-			delete m_Texture[i];
-			m_Texture[i] = 0;
-		}
-		
-	}
-
-	return;
 }
 
 void Sprite2D::SetPosition(D3DXVECTOR2 pos)

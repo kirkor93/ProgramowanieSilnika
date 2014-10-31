@@ -310,8 +310,6 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 
 
 	if (FAILED(m_device->CreateBlendState(&omDesc, &d3dBlendState)))
-
-
 		return false;
 	m_deviceContext->OMSetBlendState(d3dBlendState, 0, 0xffffffff);
 

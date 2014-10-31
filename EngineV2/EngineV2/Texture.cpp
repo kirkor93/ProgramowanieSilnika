@@ -26,6 +26,7 @@ bool Texture::Initialize(ID3D11Device* device, WCHAR* filename)
 		return false;
 	}
 
+
 	return true;
 }
 

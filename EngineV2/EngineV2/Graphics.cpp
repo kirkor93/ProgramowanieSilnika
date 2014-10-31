@@ -25,6 +25,7 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
 	bool result;
 
+	srand(time(NULL));
 	// Create the Direct3D object.
 	m_D3D = new D3DClass;
 	if (!m_D3D)
@@ -77,7 +78,7 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create other game objects.
-	gameObjects.push_back(new GameObject(L"./Textures/Level_template.dds", 2048, 2048, 0, 0));
+	BuildLevel();
 	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100));
 
 
@@ -89,7 +90,17 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		result = gameObjects[i]->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight);
 		if (!result)
 		{
-			MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
+			MessageBox(hwnd, L"Could not initialize the gameobject.", L"Error", MB_OK);
+			return false;
+		}
+	}
+
+	for (int i = 0; i < levelObjects.size(); i += 1)
+	{
+		result = levelObjects[i]->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight);
+		if (!result)
+		{
+			MessageBox(hwnd, L"Could not initialize level object.", L"Error", MB_OK);
 			return false;
 		}
 	}
@@ -197,6 +208,22 @@ bool Graphics::Render()
 	// Turn off the Z buffer to begin all 2D rendering.
 	m_D3D->TurnZBufferOff();
 
+	if (levelObjects.size()>0)
+	{
+		for (int i = 0; i < levelObjects.size(); i += 1)
+		{
+			result = levelObjects[i]->Render(m_D3D->GetDeviceContext());
+			if (!result)
+			{
+				return false;
+			}
+			result = m_TextureShader->Render(m_D3D->GetDeviceContext(), levelObjects[i]->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, levelObjects[i]->GetTexture());
+			if (!result)
+			{
+				return false;
+			}
+		}
+	}
 
 	if (gameObjects.size()>0)
 	{
@@ -253,5 +280,30 @@ void Graphics::AddFrameCounter()
 	{
 		mainGameObject->SetNextAnimationFrame();
 		keyPressedFrameCounter++;
+	}
+}
+
+void Graphics::BuildLevel()
+{
+	for (int i = -1024; i < 1024; i += 128)
+	{
+		for (int j = -1024; j < 1024; j += 128)
+		{
+			int random = rand() % 3;
+			switch (random)
+			{
+			case 0:
+				levelObjects.push_back(new GameObject(L"./Textures/Water.dds", 128, 128, i, j));
+				break;
+			case 1:
+				levelObjects.push_back(new GameObject(L"./Textures/Grass.dds", 128, 128, i, j));
+				break;
+			case 2:
+				levelObjects.push_back(new GameObject(L"./Textures/Wall.dds", 128, 128, i, j));
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }

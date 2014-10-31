@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 //////////////
 // MY CLASS INCLUDES //
@@ -9,6 +11,7 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "TextureShaderClass.h"
+#include "TexturesManager.h"
 
 
 /////////////
@@ -35,6 +38,7 @@ public:
 
 private:
 	bool Render();
+	void BuildLevel();
 
 private:
 	int keyPressedFrameCounter;
@@ -42,5 +46,7 @@ private:
 	Camera* m_Camera;
 	GameObject* mainGameObject;
 	std::vector<GameObject*> gameObjects;
+	std::vector<GameObject*> levelObjects;
+	TexturesManager* textureManager;
 	TextureShaderClass* m_TextureShader;
 };
