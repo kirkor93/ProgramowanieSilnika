@@ -18,6 +18,10 @@ public:
 	~LevelBuilder();
 	bool Initialize(string filename);
 	void BuildLevel(vector<GameObject*> &levelObjects);
+	GameObject* BuildPlayer();
+	void BuildOther(vector<GameObject*> &otherObjects);
+
+
 
 private:
 	char* XMLDocument;

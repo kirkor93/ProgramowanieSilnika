@@ -66,3 +66,63 @@ void LevelBuilder::BuildLevel(vector<GameObject*> &levelObjects)
 	doc.clear();
 }
 
+GameObject* LevelBuilder::BuildPlayer()
+{
+	xml_document <> doc;
+	try
+	{
+		doc.parse < 0 >(this->XMLDocument);
+	}
+	catch (parse_error p)
+	{
+		p.what();
+	}
+	xml_node <> * root = doc.first_node();
+
+	xml_attribute <>* attr = root->first_attribute();
+	int sizeX = Converter::StringToInt(attr->value());
+	attr = attr->next_attribute();
+	int sizeY = Converter::StringToInt(attr->value());
+	attr = attr->next_attribute();
+	int positionX = Converter::StringToInt(attr->value());
+	attr = attr->next_attribute();
+	int positionY = Converter::StringToInt(attr->value());
+	attr = attr->next_attribute();
+	wchar_t* i_textureName = Converter::StringToWchar(attr->value());
+	attr = attr->next_attribute();
+	int animationFramesCount = Converter::StringToInt(attr->value());
+
+	return new GameObject(i_textureName, sizeX, sizeY, positionX, positionY, animationFramesCount);
+}
+
+void LevelBuilder::BuildOther(vector<GameObject*> &otherObjects)
+{
+	xml_document <> doc;
+	try
+	{
+		doc.parse < 0 >(this->XMLDocument);
+	}
+	catch (parse_error p)
+	{
+		p.what();
+	}
+	xml_node <> * root = doc.first_node();
+
+	for (xml_node <>* branch = root->first_node(); branch; branch = branch->next_sibling())
+	{
+		xml_attribute <>* attr = branch->first_attribute();
+		int sizeX = Converter::StringToInt(attr->value());
+		attr = attr->next_attribute();
+		int sizeY = Converter::StringToInt(attr->value());
+		attr = attr->next_attribute();
+		int positionX = Converter::StringToInt(attr->value());
+		attr = attr->next_attribute();
+		int positionY = Converter::StringToInt(attr->value());
+		attr = attr->next_attribute();
+		wchar_t* i_textureName = Converter::StringToWchar(attr->value());
+		attr = attr->next_attribute();
+		int animationFramesCount = Converter::StringToInt(attr->value());
+
+		otherObjects.push_back(new GameObject(i_textureName, sizeX, sizeY, positionX, positionY, animationFramesCount));
+	}
+}

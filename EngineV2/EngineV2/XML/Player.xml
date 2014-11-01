@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<player sizeX="128"
+        sizeY="128"
+        positionX="320"
+        positionY="240"
+        textureName="./Textures/Main_champ_atlas.dds"
+        animationFramesCount="8"
+/>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<other>
+  <element sizeX="128"
+        sizeY="128"
+        positionX="400"
+        positionY="240"
+        textureName="./Textures/Alien.dds"
+        animationFramesCount="1"
+  />
+
+  <element sizeX="128"
+        sizeY="128"
+        positionX="200"
+        positionY="100"
+        textureName="./Textures/Alien.dds"
+        animationFramesCount="1"
+  />
+
+  <element sizeX="128"
+        sizeY="128"
+        positionX="800"
+        positionY="240"
+        textureName="./Textures/Alien.dds"
+        animationFramesCount="1"
+  />
+</other>

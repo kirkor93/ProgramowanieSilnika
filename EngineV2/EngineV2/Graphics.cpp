@@ -53,37 +53,38 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create the MAIN game object.
-	mainGameObject = new GameObject(L"./Textures/Main_champ_atlas.dds", 128, 128, 320, 240, 8);
-	if (!mainGameObject)
-	{
-		return false;
-	}
-
-	// Initialize the model object.
-	result = mainGameObject->Initialize(m_D3D->GetDevice(), screenWidth, screenHeight);
+	LevelBuilder builder;
+	result = builder.Initialize("./XML/Player.xml");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}
-
+	mainGameObject = builder.BuildPlayer();
+	mainGameObject->Initialize(this->m_D3D->GetDevice(), screenWidth, screenHeight);
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create other game objects.
-	LevelBuilder builder;
-	result = builder.Initialize("./Level.xml");
+	LevelBuilder builder2;
+	result = builder2.Initialize("./XML/Other.xml");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the LevelBuilder.", L"Error", MB_OK);
 		return false;
 	}
-	builder.BuildLevel(this->levelObjects);
+	builder2.BuildOther(this->gameObjects);
 
 
+	// Create level game objects.
+	LevelBuilder builder3;
+	result = builder3.Initialize("./XML/Level.xml");
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the LevelBuilder.", L"Error", MB_OK);
+		return false;
+	}
+	builder3.BuildLevel(this->levelObjects);
 
-	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100, 1));
-
-	// Initialize other game objects.
 
 	for (int i = 0; i < gameObjects.size(); i += 1)
 	{
