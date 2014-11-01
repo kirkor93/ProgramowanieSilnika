@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "Texture.h"
+#include "Converter.h"
 
 using namespace std;
 

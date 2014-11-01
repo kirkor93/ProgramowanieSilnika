@@ -23,24 +23,13 @@ bool TexturesManager::GetTexture(ID3D11Device* device, WCHAR* filename, Texture 
 	textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
 	return texture.Initialize(device, filename);
 	
-	///////Exceptions version
-	//try
-	//{
-	//	texture = *(textures.at(filename));
-	//}
-	//catch (std::out_of_range)
-	//{
-	//	textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
-	//	return texture.Initialize(device, filename);
-	//}
-
-	//return true;
 }
 
 void TexturesManager::Shutdown()
 {
 	for (map<WCHAR*, Texture*>::iterator it = textures.begin(); it != textures.end(); it++)
 	{
+		//delete it->first;
 		it->second->Shutdown();
 	}
 }

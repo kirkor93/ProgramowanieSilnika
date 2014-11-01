@@ -53,7 +53,7 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Create the MAIN game object.
-	mainGameObject = new GameObject(L"./Textures/Main_champ_1.dds", 128, 128, 320, 240);
+	mainGameObject = new GameObject(L"./Textures/Main_champ_atlas.dds", 128, 128, 320, 240, 8);
 	if (!mainGameObject)
 	{
 		return false;
@@ -67,14 +67,6 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_2.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_3.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_4.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_5.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_6.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_7.dds");
-	mainGameObject->LoadTexture(m_D3D->GetDevice(), L"./Textures/Main_champ_8.dds");
-
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create other game objects.
@@ -85,9 +77,11 @@ bool Graphics::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		MessageBox(hwnd, L"Could not initialize the LevelBuilder.", L"Error", MB_OK);
 		return false;
 	}
-	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100));
-
 	builder.BuildLevel(this->levelObjects);
+
+
+
+	gameObjects.push_back(new GameObject(L"./Textures/Alien.dds", 128, 128, 100, 100, 1));
 
 	// Initialize other game objects.
 

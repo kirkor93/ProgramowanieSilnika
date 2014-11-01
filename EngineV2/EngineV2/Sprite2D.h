@@ -25,7 +25,7 @@ private:
 	};
 
 public:
-	Sprite2D();
+	Sprite2D(int animationFramesCount);
 	Sprite2D(const Sprite2D&);
 	~Sprite2D();
 
@@ -60,6 +60,7 @@ private:
 
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount, currentAnimationFrame, animationFramesCount;
+	float animationFrameOffset, animationCoord1, animationCoord2;
 	vector<Texture*> m_Texture;
 
 	int m_screenWidth, m_screenHeight;

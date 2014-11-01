@@ -1,9 +1,14 @@
 #include "Sprite2D.h"
 
-Sprite2D::Sprite2D()
+Sprite2D::Sprite2D(int animationFramesCount)
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
+	this->animationFramesCount = animationFramesCount;
+	animationFrameOffset = 1.0f / (float)animationFramesCount;
+	this->animationCoord1 = 0.0f;
+	this->animationCoord2 = 0.0f + animationFrameOffset;
+	this->currentAnimationFrame = 0;
 }
 
 
@@ -39,9 +44,6 @@ bool Sprite2D::Initialize(ID3D11Device* device, int screenWidth, int screenHeigh
 	{
 		return false;
 	}
-
-	animationFramesCount = 0;
-	currentAnimationFrame = 0;
 
 	result = LoadTexture(device, firstTextureFrameName);
 }
@@ -81,7 +83,7 @@ int Sprite2D::GetIndexCount()
 
 ID3D11ShaderResourceView* Sprite2D::GetTexture()
 {
-	return m_Texture[currentAnimationFrame]->GetTexture();
+	return m_Texture[0]->GetTexture();
 }
 
 bool Sprite2D::InitializeBuffers(ID3D11Device* device)
@@ -233,23 +235,23 @@ bool Sprite2D::UpdateBuffers(ID3D11DeviceContext* deviceContext, float positionX
 	// Load the vertex array with data.
 	// First triangle.
 	vertices[0].position = D3DXVECTOR3(left, top, 0.0f);  // Top left.
-	vertices[0].texture = D3DXVECTOR2(0.0f, 0.0f);
+	vertices[0].texture = D3DXVECTOR2(animationCoord1, 0.0f);
 
 	vertices[1].position = D3DXVECTOR3(right, bottom, 0.0f);  // Bottom right.
-	vertices[1].texture = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[1].texture = D3DXVECTOR2(animationCoord2, 1.0f);
 
 	vertices[2].position = D3DXVECTOR3(left, bottom, 0.0f);  // Bottom left.
-	vertices[2].texture = D3DXVECTOR2(0.0f, 1.0f);
+	vertices[2].texture = D3DXVECTOR2(animationCoord1, 1.0f);
 
 	// Second triangle.
 	vertices[3].position = D3DXVECTOR3(left, top, 0.0f);  // Top left.
-	vertices[3].texture = D3DXVECTOR2(0.0f, 0.0f);
+	vertices[3].texture = D3DXVECTOR2(animationCoord1, 0.0f);
 
 	vertices[4].position = D3DXVECTOR3(right, top, 0.0f);  // Top right.
-	vertices[4].texture = D3DXVECTOR2(1.0f, 0.0f);
+	vertices[4].texture = D3DXVECTOR2(animationCoord2, 0.0f);
 
 	vertices[5].position = D3DXVECTOR3(right, bottom, 0.0f);  // Bottom right.
-	vertices[5].texture = D3DXVECTOR2(1.0f, 1.0f);
+	vertices[5].texture = D3DXVECTOR2(animationCoord2, 1.0f);
 
 	// Lock the vertex buffer so it can be written to.
 	result = deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -300,6 +302,9 @@ void Sprite2D::SetNextAnimationFrame()
 {
 	currentAnimationFrame++;
 	currentAnimationFrame %= animationFramesCount;
+
+	animationCoord1 = animationFrameOffset*currentAnimationFrame;
+	animationCoord2 = animationFrameOffset*currentAnimationFrame + animationFrameOffset;
 }
 
 bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
@@ -315,7 +320,6 @@ bool Sprite2D::LoadTexture(ID3D11Device* device, WCHAR* filename)
 	{
 		return false;
 	}
-	animationFramesCount++;
 	return true;
 }
 

@@ -1,17 +1,18 @@
 #include "GameObject.h"
 
-GameObject::GameObject(WCHAR* textureName, int bitmapWidth, int bitmapHeight, float positionX, float positionY)
+GameObject::GameObject(WCHAR* textureName, int bitmapWidth, int bitmapHeight, float positionX, float positionY, int animationFramesCount)
 {
 	this->textureName = textureName;
 	this->bitmapHeight = bitmapWidth;
 	this->bitmapWidth = bitmapHeight;
 	this->Position.x = positionX;
 	this->Position.y = positionY;
+	this->animationFramesCount = animationFramesCount;
 }
 
 bool GameObject::Initialize(ID3D11Device* device, int screenWidth, int screenHeight)
 {
-	m_Sprite2D = new Sprite2D();
+	m_Sprite2D = new Sprite2D(this->animationFramesCount);
 	return this->m_Sprite2D->Initialize(device, screenWidth, screenHeight, this->textureName, this->bitmapWidth, this->bitmapHeight);
 }
 void GameObject::Shutdown()
