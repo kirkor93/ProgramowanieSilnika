@@ -6,6 +6,7 @@
 #include "./RapidXML/rapidxml.hpp"
 
 #include "GameObject.h"
+#include "Converter.h"
 
 using namespace std;
 using namespace rapidxml;

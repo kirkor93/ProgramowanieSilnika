@@ -288,7 +288,7 @@ void Graphics::SendTranslate(float positionX, float positionY)
 	this->m_Camera->Translate(positionX, -positionY, 0.0f);
 }
 
-void Graphics::AddFrameCounter()
+void Graphics::IncrementFrameCounter()
 {
 	keyPressedFrameCounter += 1;
 	keyPressedFrameCounter %= 1000;

@@ -21,6 +21,7 @@ bool LevelBuilder::Initialize(string filename)
 	file.seekg(0);
 	XMLDocument = new char[fileSize + 1];
 	file.read(XMLDocument, fileSize);
+	file.close();
 
 	return true;
 }
@@ -63,24 +64,20 @@ void LevelBuilder::BuildLevel(vector<GameObject*> &levelObjects)
 			textureName = attribute->value();
 
 
-			int i_rowPositionX = atoi(rowPositionX.c_str());
-			int i_rowPositionY = atoi(rowPositionY.c_str());
-			int i_elementSizeX = atoi(elementSizeX.c_str());
-			int i_elementSizeY = atoi(elementSizeY.c_str());
-			int i_offset = atoi(offset.c_str());
+			int i_rowPositionX = Converter::StringToInt(rowPositionX);
+			int i_rowPositionY = Converter::StringToInt(rowPositionY);
+			int i_elementSizeX = Converter::StringToInt(elementSizeX);
+			int i_elementSizeY = Converter::StringToInt(elementSizeY);
+			int i_offset = Converter::StringToInt(offset);
 
-			wchar_t wCharOutput[1023];
-			size_t* sizeOut = new size_t;
-			size_t sizeInWords = 256;
+			wchar_t* i_textureName = Converter::StringToWchar(textureName);
 
-			const char* cStr;
-			cStr = textureName.c_str();
-			mbstowcs_s(sizeOut, wCharOutput, sizeInWords, cStr, strlen(cStr) + 1);
-
-			levelObjects.push_back(new GameObject(wCharOutput, i_elementSizeX, i_elementSizeY, (i_rowPositionX + i_offset), i_rowPositionY));
+			levelObjects.push_back(new GameObject(i_textureName, i_elementSizeX, i_elementSizeY, (i_rowPositionX + i_offset), i_rowPositionY));
 		}
 
 		
 	}
+
+	doc.clear();
 }
 

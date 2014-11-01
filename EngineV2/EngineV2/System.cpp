@@ -145,7 +145,7 @@ bool System::Frame()
 	}
 	m_Graphics->SendTranslate(m_Input->GetPosX(), m_Input->GetPosY());
 	if (m_Input->IsKeyPressed())
-		m_Graphics->AddFrameCounter();
+		m_Graphics->IncrementFrameCounter();
 	// Do the frame processing for the graphics object.
 	result = m_Graphics->Frame();
 	if (!result)

@@ -35,7 +35,7 @@ public:
 	bool Frame();
 
 	void SendTranslate(float, float);
-	void AddFrameCounter();
+	void IncrementFrameCounter();
 
 private:
 	bool Render();

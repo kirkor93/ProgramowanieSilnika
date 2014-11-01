@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorShaderClass.cpp" />
+    <ClCompile Include="Converter.cpp" />
     <ClCompile Include="D3DClass.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -97,6 +98,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorShaderClass.h" />
+    <ClInclude Include="Converter.h" />
     <ClInclude Include="D3DClass.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphics.h" />

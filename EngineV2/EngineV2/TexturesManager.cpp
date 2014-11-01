@@ -4,18 +4,37 @@ map<WCHAR*, Texture*> TexturesManager::textures;
 
 bool TexturesManager::GetTexture(ID3D11Device* device, WCHAR* filename, Texture &texture)
 {
+	//int a = textures.size();
+	//ostringstream ss;
+	//ss << a;
+	//string str = ss.str();
+	//OutputDebugStringA(str.c_str());
+	
+	for (map<WCHAR*, Texture*>::iterator it = textures.begin(); it != textures.end(); it++)
+	{
+		int check = wcscmp(it->first, filename);
+		if (!check)
+		{
+			texture = *(it->second);
+			return true;
+		}
+	}
+	
+	textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
+	return texture.Initialize(device, filename);
+	
 	///////Exceptions version
-	try
-	{
-		texture = *(textures.at(filename));
-	}
-	catch (std::out_of_range)
-	{
-		textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
-		return texture.Initialize(device, filename);
-	}
+	//try
+	//{
+	//	texture = *(textures.at(filename));
+	//}
+	//catch (std::out_of_range)
+	//{
+	//	textures.insert(pair<WCHAR*, Texture*>(filename, &texture));
+	//	return texture.Initialize(device, filename);
+	//}
 
-	return true;
+	//return true;
 }
 
 void TexturesManager::Shutdown()
