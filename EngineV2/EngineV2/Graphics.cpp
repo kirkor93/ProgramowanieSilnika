@@ -204,7 +204,8 @@ bool Graphics::Render()
 {
 	D3DXMATRIX viewMatrix, orthoMatrix, worldMatrix;
 	bool result;
-
+	D3DXMATRIX mainObjectRotationMatrix;
+	mainGameObject->GetRotationMatrix(mainObjectRotationMatrix);
 
 	// Clear the buffers to begin the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -254,6 +255,8 @@ bool Graphics::Render()
 		}
 	}
 
+
+
 	// Put the bitmap vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	result = mainGameObject->Render(m_D3D->GetDeviceContext());
 	if (!result)
@@ -261,8 +264,9 @@ bool Graphics::Render()
 		return false;
 	}
 
+
 	// Render the bitmap with the texture shader.
-	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), mainGameObject->GetIndexCount(), worldMatrix, viewMatrix, orthoMatrix, mainGameObject->GetTexture());
+	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), mainGameObject->GetIndexCount(), mainObjectRotationMatrix, viewMatrix, orthoMatrix, mainGameObject->GetTexture());
 	if (!result)
 	{
 		return false;

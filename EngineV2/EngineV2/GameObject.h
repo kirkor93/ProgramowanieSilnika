@@ -11,7 +11,7 @@ private:
 	int animationFramesCount;
 	Sprite2D* m_Sprite2D;
 	D3DXVECTOR2 Position;
-	D3DXVECTOR2 Rotation;
+	D3DXVECTOR3 Rotation;
 	D3DXVECTOR2 Scale;
 
 public:
@@ -32,4 +32,7 @@ public:
 	void SetModelRotation();
 	void SetModelScale();
 
+	void Rotate(D3DXVECTOR3 rotation);
+
+	void GetRotationMatrix(D3DXMATRIX &matrix);
 };

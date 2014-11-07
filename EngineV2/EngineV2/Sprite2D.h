@@ -38,10 +38,13 @@ public:
 
 	void SetPosition(D3DXVECTOR2);
 	void SetScale(D3DXVECTOR2);
-	void SetRotation(D3DXVECTOR2);
+	void SetRotation(D3DXVECTOR3);
 
 	void SetNextAnimationFrame();
 	bool LoadTexture(ID3D11Device*, WCHAR*);
+
+	void GetRotationMatrix(D3DXMATRIX &matrix);
+
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -55,7 +58,7 @@ private:
 private:
 
 	D3DXVECTOR2 Position;
-	D3DXVECTOR2 Rotation;
+	D3DXVECTOR3 Rotation;
 	D3DXVECTOR2 Scale;
 
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;

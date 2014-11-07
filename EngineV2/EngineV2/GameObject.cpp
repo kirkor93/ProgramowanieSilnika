@@ -66,3 +66,13 @@ void GameObject::Translate(float posX, float posY)
 	this->Position.x += posX;
 	this->Position.y += posY;
 }
+
+void GameObject::Rotate(D3DXVECTOR3 rotation)
+{
+	this->Rotation = rotation;
+}
+
+void GameObject::GetRotationMatrix(D3DXMATRIX &matrix)
+{
+	this->m_Sprite2D->GetRotationMatrix(matrix);
+}

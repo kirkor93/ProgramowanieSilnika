@@ -331,7 +331,12 @@ void Sprite2D::SetScale(D3DXVECTOR2 scale)
 {
 	this->Scale = scale;
 }
-void Sprite2D::SetRotation(D3DXVECTOR2 rot)
+void Sprite2D::SetRotation(D3DXVECTOR3 rot)
 {
 	this->Rotation = rot;
+}
+
+void Sprite2D::GetRotationMatrix(D3DXMATRIX &matrix)
+{
+	D3DXMatrixRotationZ(&matrix, 1.5707f);
 }
